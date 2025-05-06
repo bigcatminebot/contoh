@@ -2,28 +2,27 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Promo Spesial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Promo Situs Terpercaya</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6f8;
+      background-color: #f9fbfd;
       color: #333;
     }
 
     header {
-      position: fixed;
-      top: 0;
+      position: relative;
       width: 100%;
-      background-color: #fff;
+      background-color: #ffffff;
       padding: 15px 30px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      z-index: 999;
     }
 
     .logo {
@@ -33,18 +32,36 @@
     }
 
     .logo img {
-      height: 45px;
+      height: 50px;
     }
 
     .logo span {
       font-size: 1.6rem;
-      font-weight: 600;
+      font-weight: bold;
       color: #222;
     }
 
+    .auth-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .auth-buttons .btn-link {
+      text-decoration: none;
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .auth-buttons .btn-link:hover {
+      background-color: #0056b3;
+    }
+
     .content {
-      padding-top: 100px;
-      width: 100%;
+      padding-top: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -77,14 +94,23 @@
       100% { transform: translateX(0); }
     }
 
+    .promo-text {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      max-width: 700px;
+      line-height: 1.6;
+      color: #222;
+    }
+
     .container {
+      margin-top: 30px;
       max-width: 600px;
       background-color: #fff;
-      color: #333;
       border-radius: 10px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.08);
       padding: 30px;
-      margin: 20px;
       text-align: center;
     }
 
@@ -106,27 +132,20 @@
       animation: fadeUp 5s linear infinite;
     }
 
+    .withdraw-item span.new {
+      background-color: #ff4757;
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+
     @keyframes fadeUp {
       0% { transform: translateY(30px); opacity: 0; }
       10% { opacity: 1; }
       90% { opacity: 1; }
       100% { transform: translateY(-30px); opacity: 0; }
-    }
-
-    .btn-daftar {
-      margin-top: 20px;
-      background-color: #007bff;
-      color: #fff;
-      padding: 12px 25px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .btn-daftar:hover {
-      background-color: #0056b3;
     }
 
     footer {
@@ -143,30 +162,39 @@
 <body>
   <header>
     <div class="logo">
-      <img src="logo.jpg" alt="Logo Situs">
-      <span>MADU88 - BANDAR ONLINE TERPERCAYA</span>
+      <img src="logo.jpg" alt="Logo Situs" />
+      <span>Situs Terpercaya</span>
+    </div>
+    <div class="auth-buttons">
+      <a href="https://linktujuanlogin.com" class="btn-link" target="_blank">Login</a>
+      <a href="https://linktujuandaftar.com" class="btn-link" target="_blank">Daftar</a>
     </div>
   </header>
 
   <div class="content">
     <div class="slider">
       <div class="slides">
-        <img src="slide1.jpg" alt="Slide 1">
-        <img src="slide2.jpg" alt="Slide 2">
-        <img src="slide3.jpg" alt="Slide 3">
+        <img src="slide1.jpg" alt="Slide 1" />
+        <img src="slide2.jpg" alt="Slide 2" />
+        <img src="slide3.jpg" alt="Slide 3" />
       </div>
     </div>
 
+    <div class="promo-text">
+      <p><strong>Daftar dan tarik dana hanya dalam hitungan menit!</strong></p>
+      <p>Minimal deposit mulai Rp10.000. Penarikan dana cepat dan real-time, mulai dari Rp50.000 dan kelipatan Rp10.000.</p>
+      <p><em>Live Withdraw langsung ditampilkan, dan beberapa member baru langsung dapatkan kemenangan!</em></p>
+    </div>
+
     <div class="container">
-      <h1>Promo Eksklusif Hari Ini</h1>
-      <p>Live Withdraw:</p>
+      <h1>Live Withdraw Member</h1>
+      <p>Lihat penarikan terbaru dari member aktif kami:</p>
       <div class="withdraw-list" id="withdraw-list"></div>
-      <button class="btn-daftar" onclick="window.location.href='https://linktujuanmu.com'">Daftar Sekarang</button>
     </div>
   </div>
 
   <footer>
-    &copy; <span id="year"></span> Nama Situs Profesional. Semua Hak Dilindungi.
+    &copy; <span id="year"></span> Situs Terpercaya. Semua Hak Dilindungi.
   </footer>
 
   <script>
@@ -184,24 +212,30 @@
       const min = 50000;
       const max = 50000000;
       const step = 10000;
-      const range = Math.floor((max - min) / step) + 1;
-      const amount = min + (Math.floor(Math.random() * range) * step);
-      return 'Rp ' + amount.toLocaleString('id-ID');
+      const steps = Math.floor((max - min) / step);
+      const randomStep = Math.floor(Math.random() * steps);
+      return min + (randomStep * step);
+    }
+
+    function isNewMember() {
+      return Math.random() < 0.3; // 30% kemungkinan new member
     }
 
     function addWithdrawItem() {
       const list = document.getElementById('withdraw-list');
       const item = document.createElement('div');
       item.className = 'withdraw-item';
-      item.textContent = `${randomUsername()} berhasil withdraw ${randomAmount()}`;
+      const name = randomUsername();
+      const amount = 'Rp ' + randomAmount().toLocaleString('id-ID');
+      const newBadge = isNewMember() ? '<span class="new">NEW</span>' : '';
+      item.innerHTML = `${name} berhasil withdraw ${amount} ${newBadge}`;
       list.appendChild(item);
-
       if (list.children.length > 10) {
         list.removeChild(list.children[0]);
       }
     }
 
-    setInterval(addWithdrawItem, 2000);
+    setInterval(addWithdrawItem, 2500);
     for (let i = 0; i < 5; i++) addWithdrawItem();
 
     document.getElementById('year').textContent = new Date().getFullYear();
