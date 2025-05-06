@@ -9,21 +9,17 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: start;
-      min-height: 100vh;
+      background-color: #f4f6f8;
+      color: #333;
     }
 
     header {
       position: fixed;
       top: 0;
       width: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 10px 0;
+      background-color: #fff;
+      padding: 15px 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -33,17 +29,17 @@
     .logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .logo img {
-      max-height: 50px;
+      height: 45px;
     }
 
     .logo span {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #fff;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #222;
     }
 
     .content {
@@ -55,12 +51,12 @@
     }
 
     .slider {
-      width: 100%;
-      max-width: 600px;
+      width: 90%;
+      max-width: 900px;
       margin: 20px auto;
-      position: relative;
-      overflow: hidden;
       border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .slides {
@@ -71,7 +67,7 @@
 
     .slides img {
       width: 100%;
-      height: auto;
+      display: block;
     }
 
     @keyframes slide {
@@ -82,29 +78,31 @@
     }
 
     .container {
-      text-align: center;
       max-width: 600px;
+      background-color: #fff;
+      color: #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
       padding: 30px;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 16px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+      margin: 20px;
+      text-align: center;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
+      font-size: 2rem;
+      margin-bottom: 10px;
     }
 
     .withdraw-list {
-      margin: 20px 0;
+      margin-top: 20px;
       max-height: 200px;
       overflow: hidden;
     }
 
     .withdraw-item {
       font-size: 1rem;
-      opacity: 0.9;
-      margin: 6px 0;
+      color: #444;
+      margin: 5px 0;
       animation: fadeUp 5s linear infinite;
     }
 
@@ -116,19 +114,29 @@
     }
 
     .btn-daftar {
-      margin-top: 25px;
-      padding: 12px 30px;
-      background-color: #ff6f00;
+      margin-top: 20px;
+      background-color: #007bff;
       color: #fff;
-      font-size: 1.2rem;
+      padding: 12px 25px;
+      font-size: 1rem;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
       transition: background 0.3s ease;
     }
 
     .btn-daftar:hover {
-      background-color: #ff8f00;
+      background-color: #0056b3;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #fff;
+      color: #777;
+      font-size: 0.9rem;
+      box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
+      margin-top: 40px;
     }
   </style>
 </head>
@@ -136,7 +144,7 @@
   <header>
     <div class="logo">
       <img src="logo.jpg" alt="Logo Situs">
-      <span>Nama Situs Anda</span>
+      <span>Nama Situs Profesional</span>
     </div>
   </header>
 
@@ -150,12 +158,16 @@
     </div>
 
     <div class="container">
-      <h1>Promo Spesial Hari Ini!</h1>
-      <p>Penarikan langsung dari member aktif:</p>
+      <h1>Promo Eksklusif Hari Ini</h1>
+      <p>Lihat penarikan terbaru dari member aktif kami:</p>
       <div class="withdraw-list" id="withdraw-list"></div>
       <button class="btn-daftar" onclick="window.location.href='https://linktujuanmu.com'">Daftar Sekarang</button>
     </div>
   </div>
+
+  <footer>
+    &copy; <span id="year"></span> Nama Situs Profesional. Semua Hak Dilindungi.
+  </footer>
 
   <script>
     const usernames = [
@@ -187,6 +199,8 @@
 
     setInterval(addWithdrawItem, 2000);
     for (let i = 0; i < 5; i++) addWithdrawItem();
+
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
