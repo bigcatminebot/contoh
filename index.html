@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=<, initial-scale=1.0">
   <title>Promo Spesial</title>
   <style>
     body {
@@ -206,11 +206,7 @@
 
     <div class="container">
       <h1>LIVE WITHDRAW<h1>
-      <div class="withdraw-list" id="withdraw-list"></div>
-      <button class="btn-daftar" onclick="window.location.href='https://linktujuanmu.com'">Daftar Sekarang</button>
-    </div>
-
-
+     
   <footer>
     &copy; <span id="year"></span> Nama Situs Profesional. Semua Hak Dilindungi.
   </footer>
@@ -235,35 +231,45 @@
   }
 
   function addWithdrawItem() {
-    const list = document.getElementById("withdraw-list");
-    let attempt = 0;
-    let username, amount, key;
+    function maskUsername(username) {
+  if (username.length <= 4) return '****';
+  return username.slice(0, username.length - 4) + '****';
+}
 
-    do {
-      username = generateRandomUsername();
-      amount = getRandomAmount();
-      key = username + amount;
-      attempt++;
-    } while (usedCombinations.has(key) && attempt < 20);
+function addWithdrawItem() {
+  const list = document.getElementById("withdraw-list");
 
-    usedCombinations.add(key);
-    if (usedCombinations.size > 100) usedCombinations.clear(); // Reset after 100 items
+  let username = generateUniqueUsername();
+  let amount = getRandomAmount();
+  let key = username + amount;
+  let attempt = 0;
 
-    const item = document.createElement("div");
-    item.className = "withdraw-item";
-
-    const isNew = Math.random() < 0.3;
-
-    item.innerHTML = `
-      <span>${username} telah melakukan withdraw Rp ${amount.toLocaleString('id-ID')}</span>
-      ${isNew ? '<span class="new-badge">NEW</span>' : ''}
-    `;
-
-    list.appendChild(item);
-    if (list.children.length > 10) {
-      list.removeChild(list.children[0]);
-    }
+  while (usedCombinations.has(key) && attempt < 20) {
+    username = generateUniqueUsername();
+    amount = getRandomAmount();
+    key = username + amount;
+    attempt++;
   }
+
+  usedCombinations.add(key);
+  if (usedCombinations.size > 100) usedCombinations.clear();
+
+  const item = document.createElement("div");
+  item.className = "withdraw-item";
+
+  const isNew = Math.random() < 0.3;
+  const maskedName = maskUsername(username);
+
+  item.innerHTML = `
+    <span>${maskedName} telah melakukan withdraw Rp ${amount.toLocaleString('id-ID')}</span>
+    ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+  `;
+
+  list.appendChild(item);
+  if (list.children.length > 10) {
+    list.removeChild(list.children[0]);
+  }
+}
 
   for (let i = 0; i < 5; i++) addWithdrawItem();
   setInterval(addWithdrawItem, 50000);
