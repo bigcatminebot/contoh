@@ -239,57 +239,23 @@
       "IVN", "KIM", "REY", "SRI", "YUD", "RAH", "ADE", "DEA", "FIN", "GIL"
     ];
 
-    const usedCombinations = new Set();
-
     function randomUsername() {
-      const prefix = usernames[Math.floor(Math.random() * usernames.length)];
-      return prefix + '****'; // Masking username
+      const randomPart = Math.random().toString(36).substr(2, 6).toUpperCase(); // Random 6 characters (letters + numbers)
+      return randomPart + '****'; // Add 4 stars at the end
     }
 
     function randomAmount() {
-      const amounts = [50000, 60000, 65000, 100000, 300000, 500000, 1000000, 1500000, 3000000, 5000000];
-      return amounts[Math.floor(Math.random() * amounts.length)];
+      const min = 50000;
+      const max = 10000000;
+      const amount = Math.floor(Math.random() * (max - min + 1) / 1000) * 1000 + min; // Random in multiples of 1000
+      return 'Rp ' + amount.toLocaleString('id-ID');
     }
 
     function addWithdrawItem() {
       const list = document.getElementById('withdraw-list');
-      
-      // Mendapatkan username acak
-      let username = randomUsername(); 
-      let amount = randomAmount();
-
-      // Memastikan hanya 30% peluang untuk withdraw di atas Rp 1,000,000
-      if (amount > 1000000 && Math.random() > 0.3) {
-        // Jika withdraw lebih dari Rp 1,000,000, beri peluang 30% saja
-        amount = [50000, 60000, 65000, 100000, 300000, 500000, 650000, 800000][Math.floor(Math.random() * 8)];
-      }
-
-      let key = username + amount;
-      let attempt = 0;
-
-      // Menghindari kombinasi yang sama (username + amount)
-      while (usedCombinations.has(key) && attempt < 20) {
-        username = randomUsername();
-        amount = randomAmount();
-        key = username + amount;
-        attempt++;
-      }
-
-      usedCombinations.add(key);
-      if (usedCombinations.size > 100) usedCombinations.clear();
-
       const item = document.createElement('div');
-      item.className = 'withdraw-item fade-in';
-      
-      if (amount > 1000000) {
-        triggerLightningEffect(); // Menambahkan efek petir jika nominal withdraw lebih dari 1 juta
-      }
-
-      const isNew = Math.random() < 0.3; // Memberikan peluang 30% untuk label NEW
-      item.innerHTML = `
-        <span>${username} berhasil withdraw Rp ${amount.toLocaleString('id-ID')}</span>
-        ${isNew ? '<span class="new-badge">NEW</span>' : ''}
-      `;
+      item.className = 'withdraw-item';
+      item.textContent = `${randomUsername()} berhasil withdraw ${randomAmount()}`;
       list.appendChild(item);
 
       if (list.children.length > 10) {
@@ -297,19 +263,11 @@
       }
     }
 
-    function triggerLightningEffect() {
-      const lightning = document.createElement('div');
-      lightning.classList.add('lightning');
-      document.body.appendChild(lightning);
-      setTimeout(() => {
-        lightning.remove();
-      }, 200);
-    }
-
-    setInterval(addWithdrawItem, 5000); // Menambahkan withdraw item setiap 5 detik
+    setInterval(addWithdrawItem, 50000);
     for (let i = 0; i < 5; i++) addWithdrawItem();
 
     document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+</script>
+
 </body>
 </html>
