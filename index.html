@@ -188,7 +188,7 @@
 
     <div class="container">
       <h1>Promo Eksklusif Hari Ini</h1>
-      <p>Live Withdraw:</p>
+      <p></p>
       <div class="withdraw-list" id="withdraw-list"></div>
       <button class="btn-daftar" onclick="window.location.href='https://linktujuanmu.com'">Daftar Sekarang</button>
     </div>
@@ -214,7 +214,7 @@
     }
 
     function randomAmount() {
-      const amounts = [50000, 60000, 1000000, 40000000];
+      const amounts = [50000, 60000, 65000, 100000, 300000, 500000, 1000000, 1890000, 10000000];
       return 'Rp ' + amounts[Math.floor(Math.random() * amounts.length)].toLocaleString('id-ID');
     }
 
@@ -230,7 +230,7 @@
       }
     }
 
-    setInterval(addWithdrawItem, 30000);
+    setInterval(addWithdrawItem, 50000);
     for (let i = 0; i < 5; i++) addWithdrawItem();
 
     document.getElementById('year').textContent = new Date().getFullYear();
