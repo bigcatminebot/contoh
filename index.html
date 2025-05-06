@@ -210,88 +210,66 @@
       <button class="btn-daftar" onclick="window.location.href='https://linktujuanmu.com'">Daftar Sekarang</button>
     </div>
 
-    <div class="promo-text">
-      Dapatkan kesempatan menarik untuk menang besar! Bergabung sekarang dan nikmati berbagai bonus eksklusif!
-    </div>
-  </div>
 
   <footer>
     &copy; <span id="year"></span> Nama Situs Profesional. Semua Hak Dilindungi.
   </footer>
 
   <script>
-  // SLIDER LOGIC
-  let slideIndex = 0;
-  const slides = document.getElementById("slide-track");
-  const totalSlides = slides.children.length;
-
-  function showSlide(index) {
-    slides.style.transform = `translateX(-${index * 100}%)`;
-  }
-
-  function nextSlide() {
-    slideIndex = (slideIndex + 1) % totalSlides;
-    showSlide(slideIndex);
-  }
-
-  function prevSlide() {
-    slideIndex = (slideIndex - 1 + totalSlides) % totalSlides;
-    showSlide(slideIndex);
-  }
-
-  setInterval(nextSlide, 5000); // Auto slide every 4s
-
-  // WITHDRAW LIST
-  const usernames = ["AND", "BEN", "RIO", "ZAK", "RAY", "DIN", "ALF", "TOM", "EKO", "FAH", "IVN", "KIM", "REY", "SRI", "YUD", "RAH", "ADE", "DEA", "FIN", "GIL", "YUR", "MAN", "AHM", "RIZ"];
   const usedCombinations = new Set();
 
-  function getRandomUsername() {
-    const prefix = usernames[Math.floor(Math.random() * usernames.length)];
-    const isNew = Math.random() < 0.3;
-    return { name: prefix + "****", isNew };
+  function generateRandomUsername(length = 6) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
   }
 
   function getRandomAmount() {
     const min = 50000;
-    const max = 50000000;
+    const max = 5000000;
     const step = 5000;
-    const value = Math.floor(Math.random() * ((max - min) / step + 1)) * step + min;
-    return value;
+    return Math.floor(Math.random() * ((max - min) / step + 1)) * step + min;
   }
 
   function addWithdrawItem() {
     const list = document.getElementById("withdraw-list");
     let attempt = 0;
-    let user, amount, key;
+    let username, amount, key;
 
     do {
-      user = getRandomUsername();
+      username = generateRandomUsername();
       amount = getRandomAmount();
-      key = user.name + amount;
+      key = username + amount;
       attempt++;
-    } while (usedCombinations.has(key) && attempt < 10);
+    } while (usedCombinations.has(key) && attempt < 20);
 
     usedCombinations.add(key);
-    if (usedCombinations.size > 50) {
-      // prevent unlimited growth
-      usedCombinations.clear();
-    }
+    if (usedCombinations.size > 100) usedCombinations.clear(); // Reset after 100 items
 
     const item = document.createElement("div");
     item.className = "withdraw-item";
-    item.innerHTML = `${user.name} berhasil withdraw Rp ${amount.toLocaleString('id-ID')}${user.isNew ? '<span class="new-badge">NEW</span>' : ''}`;
-    list.appendChild(item);
 
+    const isNew = Math.random() < 0.3;
+
+    item.innerHTML = `
+      <span>${username} telah melakukan withdraw Rp ${amount.toLocaleString('id-ID')}</span>
+      ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+    `;
+
+    list.appendChild(item);
     if (list.children.length > 10) {
       list.removeChild(list.children[0]);
     }
   }
 
-  // Initial list
   for (let i = 0; i < 5; i++) addWithdrawItem();
   setInterval(addWithdrawItem, 50000);
 
   document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+</script>
+
 </body>
 </html>
