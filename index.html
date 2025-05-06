@@ -9,7 +9,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom, #FFB84D, #FFD700); /* Background gradient */
+      background-color: #FFB84D; /* Background kuning seperti madu */
       color: #333;
     }
 
@@ -111,40 +111,31 @@
       margin-bottom: 10px;
     }
 
+    .promo-text {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #f56f00; /* Teks promosi berwarna oranye cerah */
+      margin-top: 50px;
+    }
+
     .withdraw-list {
       margin-top: 20px;
       max-height: 200px;
       overflow: hidden;
+      border: 1px solid #ccc; /* Border untuk list withdraw */
+      border-radius: 8px;
+      padding: 10px;
+      background-color: #f9f9f9; /* Background yang sedikit terang */
     }
 
     .withdraw-item {
       font-size: 1rem;
       color: #444;
-      margin: 5px 0;
-      animation: fadeUp 5s linear infinite;
-    }
-
-    @keyframes fadeUp {
-      0% { transform: translateY(30px); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(-30px); opacity: 0; }
-    }
-
-    .btn-daftar {
-      margin-top: 20px;
-      background-color: #007bff;
-      color: #fff;
-      padding: 12px 25px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .btn-daftar:hover {
-      background-color: #0056b3;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #e7f3fe; /* Warna latar belakang item */
+      border-left: 4px solid #4CAF50; /* Border hijau di sisi kiri untuk visualisasi */
+      border-radius: 6px;
     }
 
     footer {
@@ -156,40 +147,6 @@
       box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
       margin-top: 40px;
     }
-
-    .promo-text {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #f56f00; /* Teks promosi berwarna oranye cerah */
-      margin-top: 50px;
-    }
-
-    .new-badge {
-      font-size: 0.9rem;
-      color: #e74c3c;
-      font-weight: bold;
-      margin-left: 10px;
-    }
-
-    /* Petir */
-    .lightning {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('lightning.png'); /* Gambar petir */
-      background-size: cover;
-      animation: lightningFlash 0.2s ease-out;
-      z-index: 9999;
-    }
-
-    @keyframes lightningFlash {
-      0% { opacity: 1; }
-      50% { opacity: 0.7; }
-      100% { opacity: 1; }
-    }
-
   </style>
 </head>
 <body>
@@ -199,8 +156,8 @@
       <span></span>
     </div>
     <div class="header-buttons">
-      <a href="https://link-to-login.com" target="_blank">Login</a>
-      <a href="https://link-to-register.com" target="_blank">Daftar</a>
+      <a href="https://madu88manis.com/login" target="_blank">Login</a>
+      <a href="https://madu88manis.com/register" target="_blank">Daftar</a>
     </div>
   </header>
 
@@ -212,22 +169,18 @@
         <img src="slide1.jpg" alt="Slide 3">
       </div>
     </div>
-
-    <!-- Penjelasan Keuntungan Bergabung -->
+  <div class="promo-text">
+      <H1>Dapatkan kesempatan menarik untuk menang besar! Bergabung sekarang dan nikmati berbagai bonus eksklusif!</H1>
+    </div>
+  </div>
+  
     <div class="container">
-      <h1>Keuntungan Bergabung dengan Kami</h1>
-      <p>Dengan bergabung di situs kami, Anda akan mendapatkan berbagai keuntungan menarik, seperti:</p>
-      <ul>
-        <li>Bonus pendaftaran yang menguntungkan</li>
-        <li>Transaksi yang cepat dan aman</li>
-        <li>Kesempatan untuk memenangkan hadiah besar setiap hari</li>
-      </ul>
+      <h1>LIVE WITHDRAW</h1>
+      <div class="withdraw-list" id="withdraw-list"></div>
+      <button class="btn-daftar" onclick="window.location.href='https://madu88manis.com/register'">Daftar Sekarang</button>
     </div>
 
-    <div class="withdraw-list" id="withdraw-list"></div>
-
-    <button class="btn-daftar" onclick="window.location.href='https://linktujuanmu.com'">Daftar Sekarang</button>
-  </div>
+  
 
   <footer>
     &copy; <span id="year"></span> Nama Situs Profesional. Semua Hak Dilindungi.
@@ -254,7 +207,7 @@
     function addWithdrawItem() {
       const list = document.getElementById('withdraw-list');
       const item = document.createElement('div');
-      item.className = 'withdraw-item';
+      item.className = 'withdraw-item'; // Adding class withdraw-item
       item.textContent = `${randomUsername()} berhasil withdraw ${randomAmount()}`;
       list.appendChild(item);
 
@@ -267,7 +220,6 @@
     for (let i = 0; i < 5; i++) addWithdrawItem();
 
     document.getElementById('year').textContent = new Date().getFullYear();
-</script>
-
+  </script>
 </body>
 </html>
