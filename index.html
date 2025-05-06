@@ -2,14 +2,14 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=<, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Promo Spesial</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom, #FFB84D 60%, #fff); /* Gradien sebagian */
+      background-color: #FFB84D;
       color: #333;
     }
 
@@ -42,6 +42,11 @@
       color: #222;
     }
 
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
     .header-buttons a {
       text-decoration: none;
       padding: 10px 20px;
@@ -64,43 +69,30 @@
     }
 
     .slider {
-      position: relative;
       width: 90%;
       max-width: 900px;
       margin: 20px auto;
-      overflow: hidden;
       border-radius: 12px;
+      overflow: hidden;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .slides {
       display: flex;
-      transition: transform 0.5s ease-in-out;
+      width: 300%;
+      animation: slide 12s infinite;
     }
 
     .slides img {
       width: 100%;
-      flex-shrink: 0;
+      display: block;
     }
 
-    .nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 2rem;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.3);
-      border: none;
-      cursor: pointer;
-      z-index: 10;
-    }
-
-    .nav-btn.left {
-      left: 10px;
-    }
-
-    .nav-btn.right {
-      right: 10px;
+    @keyframes slide {
+      0% { transform: translateX(0); }
+      33% { transform: translateX(-100%); }
+      66% { transform: translateX(-200%); }
+      100% { transform: translateX(0); }
     }
 
     .container {
@@ -132,15 +124,6 @@
       animation: fadeUp 5s linear infinite;
     }
 
-    .withdraw-item .new-badge {
-      background-color: #28a745;
-      color: white;
-      font-size: 0.7rem;
-      padding: 2px 5px;
-      border-radius: 4px;
-      margin-left: 6px;
-    }
-
     @keyframes fadeUp {
       0% { transform: translateY(30px); opacity: 0; }
       10% { opacity: 1; }
@@ -167,9 +150,10 @@
     footer {
       text-align: center;
       padding: 20px;
-      background-color: #222;
-      color: #ccc;
+      background-color: #fff;
+      color: #777;
       font-size: 0.9rem;
+      box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
       margin-top: 40px;
     }
 
@@ -178,6 +162,30 @@
       font-weight: 700;
       color: #f56f00;
       margin-top: 50px;
+    }
+
+    #lightning-effect {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .flash {
+      animation: flashEffect 0.3s ease-in-out;
+    }
+
+    @keyframes flashEffect {
+      0% { opacity: 0; }
+      25% { opacity: 0.8; }
+      50% { opacity: 0; }
+      75% { opacity: 0.8; }
+      100% { opacity: 0; }
     }
   </style>
 </head>
@@ -195,87 +203,111 @@
 
   <div class="content">
     <div class="slider">
-      <button class="nav-btn left" onclick="prevSlide()">&#10094;</button>
-      <div class="slides" id="slide-track">
+      <div class="slides">
         <img src="slide1.jpg" alt="Slide 1">
         <img src="slide1.jpg" alt="Slide 2">
         <img src="slide1.jpg" alt="Slide 3">
       </div>
-      <button class="nav-btn right" onclick="nextSlide()">&#10095;</button>
     </div>
 
     <div class="container">
-      <h1>LIVE WITHDRAW<h1>
-     
+      <h1>Promo Eksklusif Hari Ini</h1>
+      <p>Jadilah bagian dari kami dan nikmati keuntungan lebih!</p>
+      <div class="withdraw-list" id="withdraw-list"></div>
+      <button class="btn-daftar" onclick="window.location.href='https://linktujuanmu.com'">Daftar Sekarang</button>
+    </div>
+
+    <div class="promo-text">
+      Dapatkan kesempatan menarik untuk menang besar! Bergabung sekarang dan nikmati berbagai bonus eksklusif!
+    </div>
+  </div>
+
   <footer>
     &copy; <span id="year"></span> Nama Situs Profesional. Semua Hak Dilindungi.
   </footer>
 
+  <div id="lightning-effect"></div>
+
   <script>
-  const usedCombinations = new Set();
+    const usernames = [
+      "AND", "BEN", "RIO", "ZAK", "RAY", "DIN", "ALF", "TOM", "EKO", "FAH",
+      "IVN", "KIM", "REY", "SRI", "YUD", "RAH", "ADE", "DEA", "FIN", "GIL"
+    ];
 
-  function generateRandomUsername(length = 6) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    let usedUsernames = new Set(); // Set untuk menyimpan username yang sudah dipakai
+
+    function randomUsername() {
+      let username;
+      do {
+        const prefix = usernames[Math.floor(Math.random() * usernames.length)];
+        username = prefix + '****' + (Math.random() < 0.3 ? ' NEW' : ''); // Username acak
+      } while (usedUsernames.has(username)); // Pastikan username belum pernah dipakai
+      usedUsernames.add(username); // Menambahkan username ke set
+      return username;
     }
-    return result;
-  }
 
-  function getRandomAmount() {
-    const min = 50000;
-    const max = 5000000;
-    const step = 5000;
-    return Math.floor(Math.random() * ((max - min) / step + 1)) * step + min;
-  }
+    function randomAmount() {
+      const amounts = [50000, 60000, 65000, 100000, 300000, 500000, 1000000, 1890000, 10000000];
+      return amounts[Math.floor(Math.random() * amounts.length)];
+    }
 
-  function addWithdrawItem() {
     function maskUsername(username) {
-  if (username.length <= 4) return '****';
-  return username.slice(0, username.length - 4) + '****';
-}
+      return username.substring(0, 3) + '****'; // Masking username
+    }
 
-function addWithdrawItem() {
-  const list = document.getElementById("withdraw-list");
+    function triggerLightningEffect() {
+      const lightning = document.getElementById('lightning-effect');
+      lightning.classList.add('flash');
+      setTimeout(() => {
+        lightning.classList.remove('flash');
+      }, 400);
+    }
 
-  let username = generateUniqueUsername();
-  let amount = getRandomAmount();
-  let key = username + amount;
-  let attempt = 0;
+    const usedCombinations = new Set();
 
-  while (usedCombinations.has(key) && attempt < 20) {
-    username = generateUniqueUsername();
-    amount = getRandomAmount();
-    key = username + amount;
-    attempt++;
-  }
+    function addWithdrawItem() {
+      const list = document.getElementById('withdraw-list');
+      let username = randomUsername(); // Menghasilkan username acak
+      let amount = randomAmount();
+      let key = username + amount;
+      let attempt = 0;
 
-  usedCombinations.add(key);
-  if (usedCombinations.size > 100) usedCombinations.clear();
+      // Menghindari kombinasi yang sama (username + amount)
+      while (usedCombinations.has(key) && attempt < 20) {
+        username = randomUsername();
+        amount = randomAmount();
+        key = username + amount;
+        attempt++;
+      }
 
-  const item = document.createElement("div");
-  item.className = "withdraw-item";
+      usedCombinations.add(key);
+      if (usedCombinations.size > 100) usedCombinations.clear();
 
-  const isNew = Math.random() < 0.3;
-  const maskedName = maskUsername(username);
+      const item = document.createElement('div');
+      item.className = 'withdraw-item fade-in';
+      
+      if (amount > 1000000) {
+        triggerLightningEffect();
+      }
 
-  item.innerHTML = `
-    <span>${maskedName} telah melakukan withdraw Rp ${amount.toLocaleString('id-ID')}</span>
-    ${isNew ? '<span class="new-badge">NEW</span>' : ''}
-  `;
+      const isNew = Math.random() < 0.3;
+      const maskedName = maskUsername(username);
 
-  list.appendChild(item);
-  if (list.children.length > 10) {
-    list.removeChild(list.children[0]);
-  }
-}
+      item.innerHTML = `
+        <span>${maskedName} berhasil withdraw Rp ${amount.toLocaleString('id-ID')}</span>
+        ${isNew ? '<span class="new-badge">NEW</span>' : ''}
+      `;
+      list.appendChild(item);
 
-  for (let i = 0; i < 5; i++) addWithdrawItem();
-  setInterval(addWithdrawItem, 50000);
+      if (list.children.length > 10) {
+        list.removeChild(list.children[0]);
+      }
+    }
 
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+    setInterval(addWithdrawItem, 50000);
+    for (let i = 0; i < 5; i++) addWithdrawItem();
 
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
