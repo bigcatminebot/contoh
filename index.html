@@ -9,7 +9,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #FFB84D; /* Background kuning seperti madu */
+      background: linear-gradient(to bottom, #FFB84D 60%, #fff); /* Gradien sebagian */
       color: #333;
     }
 
@@ -42,11 +42,6 @@
       color: #222;
     }
 
-    .header-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
     .header-buttons a {
       text-decoration: none;
       padding: 10px 20px;
@@ -69,30 +64,43 @@
     }
 
     .slider {
+      position: relative;
       width: 90%;
       max-width: 900px;
       margin: 20px auto;
-      border-radius: 12px;
       overflow: hidden;
+      border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .slides {
       display: flex;
-      width: 300%;
-      animation: slide 12s infinite;
+      transition: transform 0.5s ease-in-out;
     }
 
     .slides img {
       width: 100%;
-      display: block;
+      flex-shrink: 0;
     }
 
-    @keyframes slide {
-      0% { transform: translateX(0); }
-      33% { transform: translateX(-100%); }
-      66% { transform: translateX(-200%); }
-      100% { transform: translateX(0); }
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.3);
+      border: none;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .nav-btn.left {
+      left: 10px;
+    }
+
+    .nav-btn.right {
+      right: 10px;
     }
 
     .container {
@@ -124,6 +132,15 @@
       animation: fadeUp 5s linear infinite;
     }
 
+    .withdraw-item .new-badge {
+      background-color: #28a745;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 5px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+
     @keyframes fadeUp {
       0% { transform: translateY(30px); opacity: 0; }
       10% { opacity: 1; }
@@ -150,17 +167,16 @@
     footer {
       text-align: center;
       padding: 20px;
-      background-color: #fff;
-      color: #777;
+      background-color: #222;
+      color: #ccc;
       font-size: 0.9rem;
-      box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
       margin-top: 40px;
     }
 
     .promo-text {
       font-size: 1.8rem;
       font-weight: 700;
-      color: #f56f00; /* Teks promosi berwarna oranye cerah */
+      color: #f56f00;
       margin-top: 50px;
     }
   </style>
@@ -179,16 +195,17 @@
 
   <div class="content">
     <div class="slider">
-      <div class="slides">
+      <button class="nav-btn left" onclick="prevSlide()">&#10094;</button>
+      <div class="slides" id="slide-track">
         <img src="slide1.jpg" alt="Slide 1">
         <img src="slide1.jpg" alt="Slide 2">
         <img src="slide1.jpg" alt="Slide 3">
       </div>
+      <button class="nav-btn right" onclick="nextSlide()">&#10095;</button>
     </div>
 
     <div class="container">
       <h1>Promo Eksklusif Hari Ini</h1>
-      <p></p>
       <div class="withdraw-list" id="withdraw-list"></div>
       <button class="btn-daftar" onclick="window.location.href='https://linktujuanmu.com'">Daftar Sekarang</button>
     </div>
@@ -203,37 +220,58 @@
   </footer>
 
   <script>
-    const usernames = [
-      "AND", "BEN", "RIO", "ZAK", "RAY", "DIN", "ALF", "TOM", "EKO", "FAH",
-      "IVN", "KIM", "REY", "SRI", "YUD", "RAH", "ADE", "DEA", "FIN", "GIL"
-    ];
+    // SLIDER logic
+    let slideIndex = 0;
+    const slides = document.getElementById("slide-track");
+    const totalSlides = slides.children.length;
+
+    function showSlide(index) {
+      slides.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    function nextSlide() {
+      slideIndex = (slideIndex + 1) % totalSlides;
+      showSlide(slideIndex);
+    }
+
+    function prevSlide() {
+      slideIndex = (slideIndex - 1 + totalSlides) % totalSlides;
+      showSlide(slideIndex);
+    }
+
+    setInterval(nextSlide, 4000); // Auto slide
+
+    // WITHDRAW LIST
+    const usernames = ["AND", "BEN", "RIO", "ZAK", "RAY", "DIN", "ALF", "TOM", "EKO", "FAH", "IVN", "KIM", "REY", "SRI", "YUD", "RAH", "ADE", "DEA", "FIN", "GIL"];
 
     function randomUsername() {
       const prefix = usernames[Math.floor(Math.random() * usernames.length)];
-      return prefix + '****' + (Math.random() < 0.3 ? ' NEW' : '');
+      const isNew = Math.random() < 0.3;
+      return { name: prefix + "****", isNew };
     }
 
     function randomAmount() {
-      const amounts = [50000, 60000, 65000, 100000, 300000, 500000, 1000000, 1890000, 10000000];
-      return 'Rp ' + amounts[Math.floor(Math.random() * amounts.length)].toLocaleString('id-ID');
+      const min = 50000;
+      const max = 1000000;
+      const step = 5000;
+      const rand = Math.floor(Math.random() * ((max - min) / step + 1));
+      return 'Rp ' + ((rand * step) + min).toLocaleString('id-ID');
     }
 
     function addWithdrawItem() {
-      const list = document.getElementById('withdraw-list');
-      const item = document.createElement('div');
-      item.className = 'withdraw-item';
-      item.textContent = `${randomUsername()} berhasil withdraw ${randomAmount()}`;
+      const list = document.getElementById("withdraw-list");
+      const item = document.createElement("div");
+      item.className = "withdraw-item";
+      const user = randomUsername();
+      item.innerHTML = `${user.name} berhasil withdraw ${randomAmount()}${user.isNew ? '<span class="new-badge">NEW</span>' : ''}`;
       list.appendChild(item);
-
-      if (list.children.length > 10) {
-        list.removeChild(list.children[0]);
-      }
+      if (list.children.length > 10) list.removeChild(list.children[0]);
     }
 
     setInterval(addWithdrawItem, 50000);
     for (let i = 0; i < 5; i++) addWithdrawItem();
 
-    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
