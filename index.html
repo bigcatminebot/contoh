@@ -205,7 +205,7 @@
     </div>
 
     <div class="container">
-      <h1>Promo Eksklusif Hari Ini</h1>
+      <h1>LIVE WITHDRAW<h1>
       <div class="withdraw-list" id="withdraw-list"></div>
       <button class="btn-daftar" onclick="window.location.href='https://linktujuanmu.com'">Daftar Sekarang</button>
     </div>
@@ -220,58 +220,78 @@
   </footer>
 
   <script>
-    // SLIDER logic
-    let slideIndex = 0;
-    const slides = document.getElementById("slide-track");
-    const totalSlides = slides.children.length;
+  // SLIDER LOGIC
+  let slideIndex = 0;
+  const slides = document.getElementById("slide-track");
+  const totalSlides = slides.children.length;
 
-    function showSlide(index) {
-      slides.style.transform = `translateX(-${index * 100}%)`;
+  function showSlide(index) {
+    slides.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  function nextSlide() {
+    slideIndex = (slideIndex + 1) % totalSlides;
+    showSlide(slideIndex);
+  }
+
+  function prevSlide() {
+    slideIndex = (slideIndex - 1 + totalSlides) % totalSlides;
+    showSlide(slideIndex);
+  }
+
+  setInterval(nextSlide, 5000); // Auto slide every 4s
+
+  // WITHDRAW LIST
+  const usernames = ["AND", "BEN", "RIO", "ZAK", "RAY", "DIN", "ALF", "TOM", "EKO", "FAH", "IVN", "KIM", "REY", "SRI", "YUD", "RAH", "ADE", "DEA", "FIN", "GIL", "YUR", "MAN", "AHM", "RIZ"];
+  const usedCombinations = new Set();
+
+  function getRandomUsername() {
+    const prefix = usernames[Math.floor(Math.random() * usernames.length)];
+    const isNew = Math.random() < 0.3;
+    return { name: prefix + "****", isNew };
+  }
+
+  function getRandomAmount() {
+    const min = 50000;
+    const max = 50000000;
+    const step = 5000;
+    const value = Math.floor(Math.random() * ((max - min) / step + 1)) * step + min;
+    return value;
+  }
+
+  function addWithdrawItem() {
+    const list = document.getElementById("withdraw-list");
+    let attempt = 0;
+    let user, amount, key;
+
+    do {
+      user = getRandomUsername();
+      amount = getRandomAmount();
+      key = user.name + amount;
+      attempt++;
+    } while (usedCombinations.has(key) && attempt < 10);
+
+    usedCombinations.add(key);
+    if (usedCombinations.size > 50) {
+      // prevent unlimited growth
+      usedCombinations.clear();
     }
 
-    function nextSlide() {
-      slideIndex = (slideIndex + 1) % totalSlides;
-      showSlide(slideIndex);
+    const item = document.createElement("div");
+    item.className = "withdraw-item";
+    item.innerHTML = `${user.name} berhasil withdraw Rp ${amount.toLocaleString('id-ID')}${user.isNew ? '<span class="new-badge">NEW</span>' : ''}`;
+    list.appendChild(item);
+
+    if (list.children.length > 10) {
+      list.removeChild(list.children[0]);
     }
+  }
 
-    function prevSlide() {
-      slideIndex = (slideIndex - 1 + totalSlides) % totalSlides;
-      showSlide(slideIndex);
-    }
+  // Initial list
+  for (let i = 0; i < 5; i++) addWithdrawItem();
+  setInterval(addWithdrawItem, 50000);
 
-    setInterval(nextSlide, 4000); // Auto slide
-
-    // WITHDRAW LIST
-    const usernames = ["AND", "BEN", "RIO", "ZAK", "RAY", "DIN", "ALF", "TOM", "EKO", "FAH", "IVN", "KIM", "REY", "SRI", "YUD", "RAH", "ADE", "DEA", "FIN", "GIL"];
-
-    function randomUsername() {
-      const prefix = usernames[Math.floor(Math.random() * usernames.length)];
-      const isNew = Math.random() < 0.3;
-      return { name: prefix + "****", isNew };
-    }
-
-    function randomAmount() {
-      const min = 50000;
-      const max = 1000000;
-      const step = 5000;
-      const rand = Math.floor(Math.random() * ((max - min) / step + 1));
-      return 'Rp ' + ((rand * step) + min).toLocaleString('id-ID');
-    }
-
-    function addWithdrawItem() {
-      const list = document.getElementById("withdraw-list");
-      const item = document.createElement("div");
-      item.className = "withdraw-item";
-      const user = randomUsername();
-      item.innerHTML = `${user.name} berhasil withdraw ${randomAmount()}${user.isNew ? '<span class="new-badge">NEW</span>' : ''}`;
-      list.appendChild(item);
-      if (list.children.length > 10) list.removeChild(list.children[0]);
-    }
-
-    setInterval(addWithdrawItem, 50000);
-    for (let i = 0; i < 5; i++) addWithdrawItem();
-
-    document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
