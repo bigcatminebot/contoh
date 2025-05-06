@@ -9,7 +9,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #FFB84D;
+      background: linear-gradient(to bottom, #FFB84D, #FFD700); /* Background gradient */
       color: #333;
     }
 
@@ -160,33 +160,36 @@
     .promo-text {
       font-size: 1.8rem;
       font-weight: 700;
-      color: #f56f00;
+      color: #f56f00; /* Teks promosi berwarna oranye cerah */
       margin-top: 50px;
     }
 
-    #lightning-effect {
+    .new-badge {
+      font-size: 0.9rem;
+      color: #e74c3c;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+
+    /* Petir */
+    .lightning {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: white;
-      opacity: 0;
-      pointer-events: none;
+      background-image: url('lightning.png'); /* Gambar petir */
+      background-size: cover;
+      animation: lightningFlash 0.2s ease-out;
       z-index: 9999;
     }
 
-    .flash {
-      animation: flashEffect 0.3s ease-in-out;
+    @keyframes lightningFlash {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
     }
 
-    @keyframes flashEffect {
-      0% { opacity: 0; }
-      25% { opacity: 0.8; }
-      50% { opacity: 0; }
-      75% { opacity: 0.8; }
-      100% { opacity: 0; }
-    }
   </style>
 </head>
 <body>
@@ -210,23 +213,25 @@
       </div>
     </div>
 
+    <!-- Penjelasan Keuntungan Bergabung -->
     <div class="container">
-      <h1>Promo Eksklusif Hari Ini</h1>
-      <p>Jadilah bagian dari kami dan nikmati keuntungan lebih!</p>
-      <div class="withdraw-list" id="withdraw-list"></div>
-      <button class="btn-daftar" onclick="window.location.href='https://linktujuanmu.com'">Daftar Sekarang</button>
+      <h1>Keuntungan Bergabung dengan Kami</h1>
+      <p>Dengan bergabung di situs kami, Anda akan mendapatkan berbagai keuntungan menarik, seperti:</p>
+      <ul>
+        <li>Bonus pendaftaran yang menguntungkan</li>
+        <li>Transaksi yang cepat dan aman</li>
+        <li>Kesempatan untuk memenangkan hadiah besar setiap hari</li>
+      </ul>
     </div>
 
-    <div class="promo-text">
-      Dapatkan kesempatan menarik untuk menang besar! Bergabung sekarang dan nikmati berbagai bonus eksklusif!
-    </div>
+    <div class="withdraw-list" id="withdraw-list"></div>
+
+    <button class="btn-daftar" onclick="window.location.href='https://linktujuanmu.com'">Daftar Sekarang</button>
   </div>
 
   <footer>
     &copy; <span id="year"></span> Nama Situs Profesional. Semua Hak Dilindungi.
   </footer>
-
-  <div id="lightning-effect"></div>
 
   <script>
     const usernames = [
@@ -234,41 +239,31 @@
       "IVN", "KIM", "REY", "SRI", "YUD", "RAH", "ADE", "DEA", "FIN", "GIL"
     ];
 
-    let usedUsernames = new Set(); // Set untuk menyimpan username yang sudah dipakai
+    const usedCombinations = new Set();
 
     function randomUsername() {
-      let username;
-      do {
-        const prefix = usernames[Math.floor(Math.random() * usernames.length)];
-        username = prefix + '****' + (Math.random() < 0.3 ? ' NEW' : ''); // Username acak
-      } while (usedUsernames.has(username)); // Pastikan username belum pernah dipakai
-      usedUsernames.add(username); // Menambahkan username ke set
-      return username;
+      const prefix = usernames[Math.floor(Math.random() * usernames.length)];
+      return prefix + '****'; // Masking username
     }
 
     function randomAmount() {
-      const amounts = [50000, 60000, 65000, 100000, 300000, 500000, 1000000, 1890000, 10000000];
+      const amounts = [50000, 60000, 65000, 100000, 300000, 500000, 1000000, 1500000, 3000000, 5000000];
       return amounts[Math.floor(Math.random() * amounts.length)];
     }
 
-    function maskUsername(username) {
-      return username.substring(0, 3) + '****'; // Masking username
-    }
-
-    function triggerLightningEffect() {
-      const lightning = document.getElementById('lightning-effect');
-      lightning.classList.add('flash');
-      setTimeout(() => {
-        lightning.classList.remove('flash');
-      }, 400);
-    }
-
-    const usedCombinations = new Set();
-
     function addWithdrawItem() {
       const list = document.getElementById('withdraw-list');
-      let username = randomUsername(); // Menghasilkan username acak
+      
+      // Mendapatkan username acak
+      let username = randomUsername(); 
       let amount = randomAmount();
+
+      // Memastikan hanya 30% peluang untuk withdraw di atas Rp 1,000,000
+      if (amount > 1000000 && Math.random() > 0.3) {
+        // Jika withdraw lebih dari Rp 1,000,000, beri peluang 30% saja
+        amount = [50000, 60000, 65000, 100000, 300000, 500000, 650000, 800000][Math.floor(Math.random() * 8)];
+      }
+
       let key = username + amount;
       let attempt = 0;
 
@@ -287,14 +282,12 @@
       item.className = 'withdraw-item fade-in';
       
       if (amount > 1000000) {
-        triggerLightningEffect();
+        triggerLightningEffect(); // Menambahkan efek petir jika nominal withdraw lebih dari 1 juta
       }
 
-      const isNew = Math.random() < 0.3;
-      const maskedName = maskUsername(username);
-
+      const isNew = Math.random() < 0.3; // Memberikan peluang 30% untuk label NEW
       item.innerHTML = `
-        <span>${maskedName} berhasil withdraw Rp ${amount.toLocaleString('id-ID')}</span>
+        <span>${username} berhasil withdraw Rp ${amount.toLocaleString('id-ID')}</span>
         ${isNew ? '<span class="new-badge">NEW</span>' : ''}
       `;
       list.appendChild(item);
@@ -304,7 +297,16 @@
       }
     }
 
-    setInterval(addWithdrawItem, 50000);
+    function triggerLightningEffect() {
+      const lightning = document.createElement('div');
+      lightning.classList.add('lightning');
+      document.body.appendChild(lightning);
+      setTimeout(() => {
+        lightning.remove();
+      }, 200);
+    }
+
+    setInterval(addWithdrawItem, 5000); // Menambahkan withdraw item setiap 5 detik
     for (let i = 0; i < 5; i++) addWithdrawItem();
 
     document.getElementById('year').textContent = new Date().getFullYear();
